@@ -28,3 +28,4 @@ docker-build:
 
 variables:
   CI_REGISTRY_IMAGE: 830137832802.dkr.ecr.us-east-1.amazonaws.com
+
