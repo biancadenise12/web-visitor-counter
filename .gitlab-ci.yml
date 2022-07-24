@@ -11,17 +11,18 @@ docker-build-web:
   image: alpine:latest
   stage: build
   script:
-    - |
-      if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
-        tag=""
-        echo "Running on default branch '$CI_DEFAULT_BRANCH': tag = 'latest'"
-      else
-        tag=":$CI_COMMIT_REF_SLUG"
-        echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
-      fi
-    - docker build --platform=linux/amd64 -t flask-app web-hit-counter/
-    - docker tag flask-app:1.0 "$CI_REGISTRY_IMAGE/flask-app${tag}"
-    - docker push "$CI_REGISTRY_IMAGE/flask-app${tag}"
+    # - |
+      # if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
+      #   tag=""
+      #   echo "Running on default branch '$CI_DEFAULT_BRANCH': tag = 'latest'"
+      # else
+      #   tag=":$CI_COMMIT_REF_SLUG"
+      #   echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
+      # fi
+    - docker build --platform=linux/amd64 -t flask-app:$CI_COMMIT_REF_SLUG web-hit-counter/
+    - docker tag flask-app:$CI_COMMIT_REF_SLUG 830137832802.dkr.ecr.us-east-1.amazonaws.com/flask-app:$CI_COMMIT_REF_SLUG
+    - docker tag flask-app:$CI_COMMIT_REF_SLUG $CI_REGISTRY_IMAGE/flask-app:$CI_COMMIT_REF_SLUG
+    - docker push $CI_REGISTRY_IMAGE/flask-app:$CI_COMMIT_REF_SLUG
 
 docker-build-redis:
   image: alpine:latest
