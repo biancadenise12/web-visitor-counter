@@ -23,10 +23,10 @@ docker-build:
     - docker build --platform=linux/amd64 -t flask-app:1.0 web-hit-counter/
     - docker push "$CI_REGISTRY_IMAGE/flask-app${tag}"
   # Run this job in a branch where a Dockerfile exists
-  rules:
-    - if: $CI_COMMIT_BRANCH
-      exists:
-        - Dockerfile
+  # rules:
+  #   - if: $CI_COMMIT_BRANCH
+  #     exists:
+  #       - Dockerfile
 
 variables:
   CI_REGISTRY_IMAGE: 830137832802.dkr.ecr.us-east-1.amazonaws.com
