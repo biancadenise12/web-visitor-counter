@@ -19,7 +19,8 @@ docker-build-web:
         tag=":$CI_COMMIT_REF_SLUG"
         echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
       fi
-    - docker build --platform=linux/amd64 -t "flask-app${tag}" web-hit-counter/
+    - docker build --platform=linux/amd64 -t flask-app web-hit-counter/
+    - docker tag flask-app:1.0 "$CI_REGISTRY_IMAGE/flask-app${tag}"
     - docker push "$CI_REGISTRY_IMAGE/flask-app${tag}"
 
 docker-build-redis:
@@ -34,7 +35,8 @@ docker-build-redis:
         tag=":$CI_COMMIT_REF_SLUG"
         echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
       fi
-    - docker build --platform=linux/amd64 -t "redis${tag}" redis/
+    - docker build --platform=linux/amd64 -t redis redis/
+    - docker tag redis "$CI_REGISTRY_IMAGE/redis${tag}"
     - docker push "$CI_REGISTRY_IMAGE/redis${tag}"
 
 variables:
