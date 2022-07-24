@@ -1,11 +1,30 @@
 
 stages:
+  - infra
   - build
   - test
   - deploy
 
 before_script:
   - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 830137832802.dkr.ecr.us-east-1.amazonaws.com
+
+terraform-network:
+  image: alpine:latest
+  stage: infra
+  script: 
+    - echo "Setup of AWS network resources"
+
+terraform-ecr:
+  image: alpine:latest
+  stage: infra
+  script: 
+    - echo "Setup of AWS ecr"
+
+terraform-ecs:
+  image: alpine:latest
+  stage: infra
+  script: 
+    - echo "Setup of AWS ecs cluster"
 
 docker-build-web:
   image: alpine:latest
@@ -26,3 +45,22 @@ docker-build-redis:
 variables:
   CI_REGISTRY_IMAGE: 830137832802.dkr.ecr.us-east-1.amazonaws.com
 
+images-scanning:
+  image: alpine:latest
+  stage: test
+  script:
+    - echo "AWS command to scan images in ECR"
+
+deploy-redis:
+  image: alpine:latest
+  stage: deploy
+  script:
+    - echo "Create new version of task definition for updates"
+    - echo "Create task in ECS cluster"
+
+deploy-web:
+  image: alpine:latest
+  stage: deploy
+  script:
+    - echo "Create new version of task definition for updates"
+    - echo "Create task in ECS cluster"
