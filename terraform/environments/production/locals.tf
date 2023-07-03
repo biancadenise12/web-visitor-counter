@@ -6,7 +6,7 @@ locals {
 
   environment = "production"
   application = "web-visitor-counter"
-  project     = "berkeley"
+  project     = "test-update-atlantis"
 
   tags = {
     Environment = local.environment
